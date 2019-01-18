@@ -129,7 +129,7 @@ const App = class extends Component {
         </header>
         <div>
         <SplitPane split="vertical" minSize={100} defaultSize={450}>
-          <div style={{ marginTop: "10px", width: "100%", height: "100%", overflow: "auto" }}>
+          <div style={{ width: "100%", height: "100%", overflow: "auto" }}>
 
             <NNTreeView
               className="nntree"
