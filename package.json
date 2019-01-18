@@ -5,18 +5,12 @@
   "dependencies": {
     "antd": "^3.11.2",
     "history": "^4.7.2",
-    "lodash": "^4.17.11",
-    "mobx": "^5.6.0",
-    "mobx-react": "^5.4.2",
-    "nano-sql": "^1.8.2",
-    "pnpm": "^2.19.3",
+    "lodash": "^4.17.11",,
     "query-string": "^6.2.0",
     "react": "^16.6.3",
-    "react-dom": "^16.6.3",
-    "react-reflex": "^3.0.8",
+    "react-dom": "^16.6.3",,
     "react-scripts": "2.1.1",
     "react-split-pane": "^0.1.85",
-    "react-splitter-layout": "^3.0.1",
     "trie-search": "^1.2.8"
   },
   "scripts": {
