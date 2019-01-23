@@ -4,13 +4,17 @@
   "private": true,
   "dependencies": {
     "antd": "^3.11.2",
+    "classnames": "^2.2.6",
     "history": "^4.7.2",
     "lodash": "^4.17.11",
+    "primeicons": "^1.0.0",
+    "primereact": "^3.0.0-rc.1",
     "query-string": "^6.2.0",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "react-scripts": "2.1.1",
     "react-split-pane": "^0.1.85",
+    "react-transition-group": "^2.5.3",
     "trie-search": "^1.2.8"
   },
   "scripts": {

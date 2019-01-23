@@ -1,32 +1,22 @@
-@import '~antd/dist/antd.css';
-
 html, body root  {
     width: 100%;
     height: 100%;
     margin: 0;
     overflow: hidden;
-    color: black;
+    font-size: 16px;
+
   }
 
 body, h1, h2, h3, h4, h5, h6{
-    color: black;
-}
-.ant-tree-node-content-wrapper-open, .ant-tree-node-content-wrapper-close {
-    font-weight: bold;
+    margin-top: 3px;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-.ant-tree li {
-    padding-top: 1px;
-    padding-bottom: 1px;
+body {
+    color: #222;
 }
-.ant-tree li .ant-tree-node-content-wrapper {
-    color: black;
-}
-.ant-select-auto-complete {
-    width: 100%;
-}
-.ant-input, .ant-select-dropdown-menu-item {
-    color: black;
+h1, h2, h3, h4, h5, h6, th{
+    color: #22a;
 }
 
 .nnviewer header {
@@ -39,6 +29,9 @@ body, h1, h2, h3, h4, h5, h6{
 
 }
 
+.nnsearch .p-autocomplete, .nnsearch .p-autocomplete-input {
+    width: 100%;
+}
 .nnsearch {
     flex-grow: 1;
     padding-left: 2em;
@@ -59,10 +52,11 @@ body, h1, h2, h3, h4, h5, h6{
 .nndetail th {
     width: 10em;
     vertical-align: top;
+    text-align: left;
 }
 
 .nndetail th, td {
-    padding-bottom: 0px;
+    padding-bottom: 10px;
 }
 
 .nndetail-indent {
@@ -72,9 +66,17 @@ body, h1, h2, h3, h4, h5, h6{
 .nndetail h2 {
     font-weight: 700;
 }
-.nntree {
+
+.nnviewer .p-tree {
+    width: 100%;
+    border: none;
     padding-left: 20px;
     padding-top: 4px;
+}
+
+.nnviewer .p-tree .p-tree-container .p-treenode .p-treenode-content .p-treenode-label {
+    padding-top: 1px;
+    padding-bottom: 1px;
 }
 
 .Resizer {

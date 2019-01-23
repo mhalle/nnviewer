@@ -8,7 +8,12 @@ import _ from 'lodash';
 
 import './App.css';
 
-
+function arrayToMap(a) {
+  return _.reduce(a, (d, a) => {
+        d[a] = true;
+        return d;
+        }, {});
+}
 
 const App = class extends Component {
   constructor(props) {
@@ -21,7 +26,7 @@ const App = class extends Component {
     this.state = {
       searchString: '',
       selectedIds: [],
-      expandedIds: [props.nntree.rootId],
+      expandedIds: {[props.nntree.rootId]: true},
     };
   }
 
@@ -35,10 +40,12 @@ const App = class extends Component {
     }
   }
 
+
+
   handleHistory = (location, action) => {
     if (action === 'POP' || action === 'X-INIT') {
       let selectedIds = [];
-      let expandedIds = [this.props.nntree.rootId];
+      let expandedIds = {[this.props.nntree.rootId]: true};
       let searchString = '';
 
       const query = queryString.parse(location.search);
@@ -47,9 +54,9 @@ const App = class extends Component {
       }
 
       if (selectedIds.length === 1) {
-        expandedIds = this.props.nntree.getAncestorIds(selectedIds[0]);
-
+        expandedIds = arrayToMap(this.props.nntree.getAncestorIds(selectedIds[0]));
       }
+
       this.setState({
         selectedIds,
         expandedIds,
@@ -74,7 +81,7 @@ const App = class extends Component {
 
   onSearchSelect = (selectedIds) => {
     if (selectedIds.length === 1) {
-      const expandedIds = this.props.nntree.getAncestorIds(selectedIds[0]);
+      const expandedIds = arrayToMap(this.props.nntree.getAncestorIds(selectedIds[0]));
       this.setState({
         selectedIds,
         expandedIds,

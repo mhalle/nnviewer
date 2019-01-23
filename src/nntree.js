@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
-import Tree from 'antd/lib/tree';
-const TreeNode = Tree.TreeNode;
+import {Tree} from 'primereact/tree';
 
 export class NNTree {
     constructor(nndata) {
@@ -59,120 +58,59 @@ export class NNTree {
     }
 }
 
-
-export class NNTreeOld {
-    constructor(elems, patches) {
-        this.index = {};
-        this.rootId = "21";
-
-        for (const e of elems) {
-            if(e.cNIDType === 'h') {
-            this.index[this.getId(e)] = e;
-            }
-        }
-        if (patches) {
-            for (const i of _.keys(patches)) {
-                this.index[i] = _.assign(this.index[i], patches[i]);
-            }
-        }
-        
-        // add "children" attribute with list of child ids
-        for (const id of _.keys(this.index)) {
-            const parentId = this.getParentId(id);
-            if (typeof parentId !== "undefined" && parentId !== '') {
-                if (!_.has(this.index, parentId)) {
-                    continue;
-                }
-                const parent = this.index[parentId];
-                if ((parent.cNIDType !== this.index[id].cNIDType) && 
-                    parent.cNIDType === 'a') {
-                    console.log(parent.standardName, "(", parentId, ") / ",
-                        this.getName(id), "(", id, ")");
-                }
-                if (_.has(parent, 'children')) {
-                    parent.children.push(id);
-                }
-                else {
-                    parent.children = [id];
-                }
-            }
-        }
-    }
-    getChildrenIds(id) {
-        const elem = this.index[id];
-        if (!_.has(elem, 'children')) {
-            return null;
-        }
-        return elem.children;
-    }
-
-    getId(elem) {
-        return elem.brainInfoID;
-    }
-
-    isValidId(id) {
-        return _.has(this.index, id);
-    }
-
-    lookup(id) {
-        return this.index[id];
-    }
-
-    getParentId(id) {
-        const pid = this.index[id].parentBrainInfoId;
-        if(typeof pid === 'undefined' || pid === '') {
-            return null;
-        }
-        return pid;
-    }
-
-    getAncestorIds(id){
-        const ancestors = [id];
-        while(true) {
-            const parentId = this.getParentId(id);
-            if (parentId === null) {
-                break;
-            }
-            ancestors.push(parentId);
-            id = parentId;
-        }
-        return ancestors;
-    }
-
-    getName(id) {
-        return this.index[id].standardName;
-    }
-}
-
 export const NNTreeView = class extends Component {
-    onExpand = (expandedIds) => {
-        if (this.props.onExpand) {
-            this.props.onExpand(expandedIds);
-        }
-    }
 
-    onSelect = (selectedIds) => {
+    onSelect = (ev) => {
+        console.log(ev);
+        const selectedIds = ev.node ? [ev.node.id] : [];
         if (this.props.onSelect) {
             this.props.onSelect(selectedIds);
         }
     }
 
+    onToggle = (ev) => {
+        this.props.onExpand(ev.value);
+    }
+
     render() {
         const { nntree } = this.props;
-
+        const treeData = new TreeNode(nntree, nntree.rootId);
         return (
             <Tree 
                 className={this.props.className}
-                showLine
+                selectionMode="single"
                 onSelect={this.onSelect}
                 expandedKeys={this.props.expandedIds}
-                autoExpandParent={false}
-                onExpand={this.onExpand}
-                selectedKeys={this.props.selectedIds}              
+
+                onToggle={this.onToggle}
+                selectedKeys={this.props.selectedIds}   
+                value={[treeData]}           
             >
-                {renderTreeNodesFromChildren(nntree, nntree.rootId)}
             </Tree>
         )
+    }
+}
+
+
+class TreeNode {
+    constructor(nntree, id) {
+        this.tree = nntree;
+        this.id = id;
+    }
+
+    get key() {
+        return this.id;
+    }
+    get label() {
+        return this.tree.getName(this.id);
+    }
+
+    get children() {
+        const node = this.tree.lookup(this.id);
+        return node.children.map(c => new TreeNode(this.tree, c));
+    }
+    get data() {
+        return this.tree.lookup(this.id);
     }
 }
 

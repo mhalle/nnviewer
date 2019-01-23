@@ -1,9 +1,8 @@
 import _ from 'lodash';
 import { PrefixSearch } from './prefix-search';
 import React, { Component } from 'react';
-import Autocomplete from 'antd/lib/auto-complete';
+import {AutoComplete} from 'primereact/autocomplete';
 
-const Option = Autocomplete.Option;
 
 function promotePrimaryTerm(mnodes) {
     let matchingNodes = [];
@@ -66,13 +65,15 @@ export class NNSearchView extends Component {
         matchingNodes: [],
     }
 
-    onSelect = (v, o) => {
+    onSelect = (ev) => {
+        const o = ev.value;
         if (this.props.onSelect) {
-            this.props.onSelect([o.props.id]);
+            this.props.onSelect([o.id]);
         }
     }
 
-    handleSearch = (searchString) => {
+    handleSearch = (ev) => {
+        const searchString = ev.query;
         const matchingNodes = this.props.nnsearch.match(searchString);
         this.setState({ matchingNodes });
         if (this.props.onSearch) {
@@ -87,28 +88,26 @@ export class NNSearchView extends Component {
     render() {
         const { nntree, searchString } = this.props;
         const { matchingNodes } = this.state;
-        const children = _.map(matchingNodes, m => {
+        for (const m of matchingNodes) {
             const primaryTerm = nntree.getName(m.id);
             const matchingTerm = m.term;
-
-            const printTerm = primaryTerm === matchingTerm ?
-                primaryTerm : `${matchingTerm} [${primaryTerm}]`;
-            return <Option value={m.primaryTerm} id={m.id} key={m}>{printTerm}</Option>;
-        })
+            const labelTerm = primaryTerm === matchingTerm ? 
+                        primaryTerm : `${matchingTerm} [${primaryTerm}]`;
+            m.label = labelTerm;
+        }
+        
         return (
             <span className={this.props.className}>
-                <Autocomplete
-                    showSearch
-                    allowClear
+                <AutoComplete
+                    field="label"
+                    suggestions={matchingNodes}
                     value={searchString}
-                    optionLabelProp="value"
                     onSelect={this.onSelect}
-                    onSearch={this.handleSearch}
+                    completeMethod={this.handleSearch}
                     placeholder={this.props.placeholder}
 
                 >
-                    {children}
-                </Autocomplete>
+                </AutoComplete>
 
             </span>
         );
